@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write  # Required to create/update releases
+  id-token: write   # Additional permission needed for release creation
+
 jobs:
   build:
     name: Build on ${{ matrix.os }}
