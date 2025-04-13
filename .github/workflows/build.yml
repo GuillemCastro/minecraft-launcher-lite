@@ -20,11 +20,14 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.22' # Adjust to your Go version if needed
+          go-version: '1.22' # Adjust if needed
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
+          sudo apt update
+          sudo apt install -y software-properties-common
+          sudo add-apt-repository universe
           sudo apt update
           sudo apt install -y \
             libgtk-3-dev \
@@ -50,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.os }}
-          path: build/bin/** # Adjust if your build output path is different
+          path: build/bin/** # Adjust if your app output path is different
 
   release:
     name: Update Latest Release
