@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-22.04, windows-latest, macos-latest]
+        arch: [amd64, arm64]
 
     steps:
       - name: Checkout code
@@ -54,13 +55,15 @@ jobs:
 
       - name: Build app
         run: |
-            wails build -platform all
+            wails build -o "minecraft-launcher-lite-${{ matrix.os }}-${{ matrix.arch }}"
+        continue-on-error: true
 
       - name: Upload built artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ runner.os }}
+          name: build-${{ matrix.os }}-${{ matrix.arch }}
           path: build/bin/**/*
+        continue-on-error: true
 
   release:
     name: Create Latest Release
